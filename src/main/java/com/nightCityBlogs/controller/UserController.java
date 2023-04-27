@@ -42,6 +42,7 @@ public class UserController {
     public SaResult uploadImg(MultipartFile file){
         String originalFilename = file.getContentType();
         System.out.println(originalFilename);
+        System.out.println(file);
         return null;
     }
 
