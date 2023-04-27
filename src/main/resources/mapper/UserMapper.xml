@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nightCityBlogs.mapper.UserMapper">
+    <update id="updateAddress">
+        update userData
+        set address = #{address}
+        where id = #{id}
+    </update>
+    <update id="updateItem">
+        update userData
+        set username = #{username},
+            address  = #{address}
+        where id = #{id};
+    </update>
+    <select id="selectByName" resultType="com.nightCityBlogs.pojo.UserEntity">
+        select *
+        from userData
+        where userName = #{username}
+    </select>
+    <select id="selectById" resultType="com.nightCityBlogs.pojo.UserVo">
+        select *
+        from userData
+        where id = #{id}
+    </select>
+    <select id="getArticle" resultType="com.nightCityBlogs.pojo.Article">
+        select *
+        from article
+    </select>
+</mapper>
