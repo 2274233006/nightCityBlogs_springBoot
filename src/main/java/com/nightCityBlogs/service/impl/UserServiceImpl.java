@@ -120,4 +120,9 @@ public class UserServiceImpl implements UserService {
         }
         return SaResult.error(RespStatus.INVALID_TOKEN.getMsg());
     }
+
+    @Override
+    public SaResult verification() {
+        return null;
+    }
 }

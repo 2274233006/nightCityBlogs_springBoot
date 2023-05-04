@@ -22,4 +22,6 @@ public interface UserService {
 
 
     SaResult getRole();
+
+    SaResult verification();
 }

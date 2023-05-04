@@ -4,6 +4,7 @@ import cn.dev33.satoken.util.SaResult;
 import com.nightCityBlogs.pojo.LoginParam;
 import com.nightCityBlogs.pojo.UpdateItem;
 import com.nightCityBlogs.service.UserService;
+import com.nightCityBlogs.service.impl.MailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,6 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 public class UserController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private MailServiceImpl mailService;
 
     /**
      * login方法
@@ -69,4 +72,17 @@ public class UserController {
     public SaResult getRole(){
         return userService.getRole();
     }
+
+    @PostMapping("/verification/{emailAddress}")
+    public SaResult verification(@PathVariable String emailAddress){
+        System.out.println(emailAddress);
+        return null;
+    }
+
+
+//    @PostMapping("/verification/{authCode}")
+//    public SaResult verification(@PathVariable String authCode){
+//        System.out.println(authCode);
+//        return userService.verification();
+//    }
 }
