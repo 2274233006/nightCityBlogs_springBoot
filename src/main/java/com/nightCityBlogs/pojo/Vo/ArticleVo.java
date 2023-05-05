@@ -1,9 +1,9 @@
-package com.nightCityBlogs.pojo;
+package com.nightCityBlogs.pojo.Vo;
 
 import lombok.Data;
 
 @Data
-public class Article {
+public class ArticleVo {
     private int id;
     private String articleName;//标题
     private String classify;//分类

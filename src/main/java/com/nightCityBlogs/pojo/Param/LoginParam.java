@@ -1,4 +1,4 @@
-package com.nightCityBlogs.pojo;
+package com.nightCityBlogs.pojo.Param;
 
 import lombok.Data;
 

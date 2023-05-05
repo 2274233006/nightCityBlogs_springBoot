@@ -1,12 +1,16 @@
-package com.nightCityBlogs.service.impl;
+package com.nightCityBlogs.service.user.impl;
 
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
-import com.nightCityBlogs.pojo.*;
-import com.nightCityBlogs.status.RespStatus;
+import com.nightCityBlogs.pojo.Entity.UserEntity;
+import com.nightCityBlogs.pojo.Param.LoginParam;
+import com.nightCityBlogs.pojo.Param.UpdateParam;
+import com.nightCityBlogs.pojo.Vo.UserVo;
+import com.nightCityBlogs.utils.RedisService;
+import com.nightCityBlogs.utils.RespStatus;
 import com.nightCityBlogs.mapper.UserMapper;
-import com.nightCityBlogs.service.UserService;
+import com.nightCityBlogs.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +20,8 @@ import java.util.Objects;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private RedisService redisService;
 
     /**
      * 通过username字段查询数据库user表，若查询为空则返回用户不存在
@@ -79,21 +85,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public SaResult updateItem(UpdateItem updateItem) {
+    public SaResult updateItem(UpdateParam updateParam) {
         if (StpUtil.isLogin()) {
             String tokenValue = StpUtil.getTokenValue();//获取当前用户token
             Object loginIdByToken = StpUtil.getLoginIdByToken(tokenValue);//根据token获取当前用户id
             if (loginIdByToken != null) {
                 int id = Integer.parseInt(loginIdByToken.toString());
-                UserEntity userEntity = userMapper.selectByName(updateItem.getUsername());
+                UserEntity userEntity = userMapper.selectByName(updateParam.getUsername());
                 if (userEntity == null) {
-                        userMapper.updateItem(updateItem.getUsername(),updateItem.getAddress(),id);
+                        userMapper.updateItem(updateParam.getUsername(), updateParam.getAddress(),id);
                     UserVo userVo = userMapper.selectById(id);
                     userVo.setToken(tokenValue);
                     //修改信息成功 200
                     return SaResult.data(userVo).setMsg("修改信息成功");
                 }
-                userMapper.updateAddress(updateItem.getAddress(),id);
+                userMapper.updateAddress(updateParam.getAddress(),id);
                 UserVo userVo = userMapper.selectById(id);
                 userVo.setToken(tokenValue);
                 //userEntity为null return:用户名重复 513
@@ -121,8 +127,19 @@ public class UserServiceImpl implements UserService {
         return SaResult.error(RespStatus.INVALID_TOKEN.getMsg());
     }
 
+
     @Override
-    public SaResult verification() {
-        return null;
+    public SaResult updateEmail(UpdateParam updateParam) {
+        String newEmail = updateParam.getNewEmail();
+        Object loginIdByToken = StpUtil.getLoginIdByToken(StpUtil.getTokenValue());
+        String key = loginIdByToken.toString();
+        int id = Integer.parseInt(loginIdByToken.toString());
+        System.out.println(redisService.getValue(key));
+        if(updateParam.getAuthCode().equals(redisService.getValue(key))){
+            userMapper.updateEmail(id,newEmail);
+            UserVo userVo = userMapper.selectById(id);
+            return SaResult.data(userVo).setMsg("修改成功！");
+        }
+        return SaResult.error("验证码错误");
     }
 }

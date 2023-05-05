@@ -1,5 +1,4 @@
-package com.nightCityBlogs.service.impl;
-import com.nightCityBlogs.service.MailService;
+package com.nightCityBlogs.utils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,8 +15,8 @@ import java.util.Date;
  * @author qzz
  */
 @Service
-public class MailServiceImpl implements MailService {
-    private static final Logger logger = LoggerFactory.getLogger(MailServiceImpl.class);
+public class SendMailUtil {
+    private static final Logger logger = LoggerFactory.getLogger(SendMailUtil.class);
 
     /**
      * 注入邮件工具类

@@ -1,9 +1,8 @@
-package com.nightCityBlogs.service;
+package com.nightCityBlogs.service.user;
 
 import cn.dev33.satoken.util.SaResult;
-import com.nightCityBlogs.pojo.Article;
-import com.nightCityBlogs.pojo.LoginParam;
-import com.nightCityBlogs.pojo.UpdateItem;
+import com.nightCityBlogs.pojo.Param.LoginParam;
+import com.nightCityBlogs.pojo.Param.UpdateParam;
 
 public interface UserService {
     /**
@@ -18,10 +17,11 @@ public interface UserService {
 
     Boolean tokenVerify();
 
-    SaResult updateItem(UpdateItem updateItem);
+    SaResult updateItem(UpdateParam updateParam);
 
 
     SaResult getRole();
 
-    SaResult verification();
+
+    SaResult updateEmail(UpdateParam updateParam);
 }

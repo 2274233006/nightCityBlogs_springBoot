@@ -1,11 +1,15 @@
 server:
   port: 1010
 spring:
+  redis:
+    host: 101.34.45.254
+    port: 8888
+    password: nightCity
   datasource:
-    url: jdbc:mysql://101.34.45.254:3306/nightCityBlog?useUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://101.34.45.254:6666/nightCityBlogs?useUnicode=true&characterEncoding=utf8
     driverClassName: com.mysql.cj.jdbc.Driver
     username: root
-    password: nightcity
+    password: nightCity
 
   #邮箱基本配置
   mail:

@@ -1,4 +1,4 @@
-package com.nightCityBlogs.status;
+package com.nightCityBlogs.utils;
 
 /**
  * 返回状态码信息

@@ -1,4 +1,4 @@
-package com.nightCityBlogs.pojo;
+package com.nightCityBlogs.pojo.Vo;
 
 import cn.dev33.satoken.stp.SaTokenInfo;
 import lombok.Data;
