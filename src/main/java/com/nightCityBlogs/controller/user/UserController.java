@@ -32,13 +32,13 @@ public class UserController {
      * emailAddress邮箱地址，address城市，headPortrait头像url地址
      */
     @PostMapping("/login")
-    public SaResult selectByName(@RequestBody LoginParam loginParam) {
-        return userService.selectByName(loginParam.getUsername(), loginParam);
+    public SaResult login(@RequestBody LoginParam loginParam) {
+        return userService.login(loginParam.getUsername(), loginParam);
     }
 
     @PutMapping("/register")
     public SaResult register(@RequestBody RegisterParam registerParam) {
-        return null;
+        return userService.register(registerParam);
     }
 
     /**
@@ -46,11 +46,10 @@ public class UserController {
      *
      * @return SaResult
      */
-    @PostMapping("logout")
-    public SaResult LogOut() {
+    @PostMapping("/logout")
+    public SaResult logOut() {
         return userService.logOut();
     }
-
 
     /**
      * token验证接口，token有效为true，反之为false

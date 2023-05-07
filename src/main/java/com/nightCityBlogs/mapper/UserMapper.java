@@ -13,4 +13,8 @@ public interface UserMapper {
     void updateAddress(String address,int id);
 
     void updateEmail(int id, String newEmail);
+
+    void register(String username, String password, String emailAddress);
+
+    void uploadImg(String url,int id);
 }

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
  * @version 1.0
  */
 @RestController
-@RequestMapping("/mail")
+    @RequestMapping("/mail")
 @CrossOrigin(origins = "http://127.0.0.1:5173", allowCredentials = "true")
 public class MailController {
     @Autowired
@@ -25,7 +25,7 @@ public class MailController {
      * @return SaResult
      */
     @PostMapping("/userSendTextMail/{emailAddress}")
-    public SaResult UserSendTextMail(@PathVariable String emailAddress) {
+    public SaResult userSendTextMail(@PathVariable String emailAddress) {
         return sendMaliService.userSendTextMail(emailAddress);
     }
 

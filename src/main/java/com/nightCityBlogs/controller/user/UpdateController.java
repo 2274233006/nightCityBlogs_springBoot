@@ -1,8 +1,12 @@
 package com.nightCityBlogs.controller.user;
 
+import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
+import com.nightCityBlogs.mapper.UserMapper;
 import com.nightCityBlogs.pojo.Param.UpdateParam;
-import com.nightCityBlogs.service.user.UserService;
+import com.nightCityBlogs.pojo.Vo.UserVo;
+import com.nightCityBlogs.service.user.UpdateService;
+import com.nightCityBlogs.utils.COSUploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,7 +23,9 @@ import org.springframework.web.multipart.MultipartFile;
 public class UpdateController {
 
     @Autowired
-    private UserService userService;
+    private UpdateService updateService;
+    @Autowired
+    private UserMapper userMapper;
 
     /**
      * @param updateParam 前端传入的数据
@@ -27,7 +33,7 @@ public class UpdateController {
      */
     @PutMapping("/Item")
     public SaResult updateItem(@RequestBody UpdateParam updateParam) {
-        return userService.updateItem(updateParam);
+        return updateService.updateItem(updateParam);
     }
 
     /**
@@ -36,7 +42,7 @@ public class UpdateController {
      */
     @PutMapping("/Email")
     public SaResult updateEmail(@RequestBody UpdateParam updateParam) {
-        return userService.updateEmail(updateParam);
+        return updateService.updateEmail(updateParam);
     }
 
     /**
@@ -46,10 +52,7 @@ public class UpdateController {
      * @return SaResult
      */
     @PostMapping("/uploadImg")
-    public SaResult uploadImg(MultipartFile file) {
-        String originalFilename = file.getContentType();
-        System.out.println(originalFilename);
-        System.out.println(file);
-        return null;
+    public SaResult uploadImg(MultipartFile file) throws Exception {
+        return updateService.uploadImg(file);
     }
 }

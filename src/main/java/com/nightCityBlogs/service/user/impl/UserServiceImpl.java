@@ -5,7 +5,7 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
 import com.nightCityBlogs.pojo.Entity.UserEntity;
 import com.nightCityBlogs.pojo.Param.LoginParam;
-import com.nightCityBlogs.pojo.Param.UpdateParam;
+import com.nightCityBlogs.pojo.Param.RegisterParam;
 import com.nightCityBlogs.pojo.Vo.UserVo;
 import com.nightCityBlogs.utils.RedisService;
 import com.nightCityBlogs.utils.RespStatus;
@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
      * @return SaResult
      */
     @Override
-    public SaResult selectByName(String username, LoginParam loginParam) {
+    public SaResult login(String username, LoginParam loginParam) {
         //根据username查询数据库是否存在
         UserEntity userEntity = userMapper.selectByName(username);
         //为空则存在改用户，返回error：用户不存在
@@ -62,6 +62,19 @@ public class UserServiceImpl implements UserService {
         return SaResult.error(RespStatus.INVALID_PASSWORD.getMsg());
     }
 
+    @Override
+    public SaResult register(RegisterParam registerParam) {
+        UserEntity userEntity = userMapper.selectByName(registerParam.getUsername());
+        if(userEntity == null){
+            if(registerParam.getAuthCode().equals(redisService.getValue(registerParam.getEmailAddress()))){
+                userMapper.register(registerParam.getUsername(),registerParam.getPassword(),registerParam.getEmailAddress());
+                return SaResult.ok("注册成功！正在跳转登录");
+            }
+            return SaResult.error("验证码不正确");
+        }
+        return SaResult.error("用户名已被使用");
+    }
+
     /**
      * 退出登录，前端请求头携带satoken字段，通过token注销
      *
@@ -84,33 +97,7 @@ public class UserServiceImpl implements UserService {
         return false;
     }
 
-    @Override
-    public SaResult updateItem(UpdateParam updateParam) {
-        if (StpUtil.isLogin()) {
-            String tokenValue = StpUtil.getTokenValue();//获取当前用户token
-            Object loginIdByToken = StpUtil.getLoginIdByToken(tokenValue);//根据token获取当前用户id
-            if (loginIdByToken != null) {
-                int id = Integer.parseInt(loginIdByToken.toString());
-                UserEntity userEntity = userMapper.selectByName(updateParam.getUsername());
-                if (userEntity == null) {
-                        userMapper.updateItem(updateParam.getUsername(), updateParam.getAddress(),id);
-                    UserVo userVo = userMapper.selectById(id);
-                    userVo.setToken(tokenValue);
-                    //修改信息成功 200
-                    return SaResult.data(userVo).setMsg("修改信息成功");
-                }
-                userMapper.updateAddress(updateParam.getAddress(),id);
-                UserVo userVo = userMapper.selectById(id);
-                userVo.setToken(tokenValue);
-                //userEntity为null return:用户名重复 513
-                return SaResult.data(userVo).setMsg("用户名重复，城市已修改").setCode(513);
-            }
-            //loginIdByToken为null return:Token令牌参数异常 401
-            return SaResult.error(RespStatus.TOKEN_PARAM_EXCEPTION.getMsg()).setCode(RespStatus.TOKEN_PARAM_EXCEPTION.getCode());
-        }
-        //isLogin为null return:授权令牌无效，请重新登陆 401
-        return SaResult.error(RespStatus.INVALID_TOKEN.getMsg()).setCode(RespStatus.INVALID_TOKEN.getCode());
-    }
+
 
     @Override
     public SaResult getRole() {
@@ -128,18 +115,4 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    @Override
-    public SaResult updateEmail(UpdateParam updateParam) {
-        String newEmail = updateParam.getNewEmail();
-        Object loginIdByToken = StpUtil.getLoginIdByToken(StpUtil.getTokenValue());
-        String key = loginIdByToken.toString();
-        int id = Integer.parseInt(loginIdByToken.toString());
-        System.out.println(redisService.getValue(key));
-        if(updateParam.getAuthCode().equals(redisService.getValue(key))){
-            userMapper.updateEmail(id,newEmail);
-            UserVo userVo = userMapper.selectById(id);
-            return SaResult.data(userVo).setMsg("修改成功！");
-        }
-        return SaResult.error("验证码错误");
-    }
 }
