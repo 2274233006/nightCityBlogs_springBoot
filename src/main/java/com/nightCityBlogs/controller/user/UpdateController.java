@@ -1,12 +1,9 @@
 package com.nightCityBlogs.controller.user;
 
-import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
-import com.nightCityBlogs.mapper.UserMapper;
+import com.nightCityBlogs.mapper.user.UserMapper;
 import com.nightCityBlogs.pojo.Param.UpdateParam;
-import com.nightCityBlogs.pojo.Vo.UserVo;
 import com.nightCityBlogs.service.user.UpdateService;
-import com.nightCityBlogs.utils.COSUploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,6 +25,7 @@ public class UpdateController {
     private UserMapper userMapper;
 
     /**
+     * 修改基础信息
      * @param updateParam 前端传入的数据
      * @return SaResult
      */
@@ -37,6 +35,8 @@ public class UpdateController {
     }
 
     /**
+     * 修改邮箱
+     *
      * @param updateParam 前端传入的数据
      * @return SaResult
      */
@@ -54,5 +54,13 @@ public class UpdateController {
     @PostMapping("/uploadImg")
     public SaResult uploadImg(MultipartFile file) throws Exception {
         return updateService.uploadImg(file);
+    }
+    @PutMapping("/updatePassword")
+    public SaResult updatePassword(@RequestBody UpdateParam updateParam){
+        return updateService.updatePassword(updateParam);
+    }
+    @PostMapping("/unsubscribe")
+    public SaResult unsubscribe(@RequestBody UpdateParam updateParam){
+        return updateService.unsubscribe(updateParam);
     }
 }

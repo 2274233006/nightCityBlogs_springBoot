@@ -14,7 +14,7 @@ public class UserVo {
     private String username;//用户名
     private String role;//权限
     private String token;
-    private String creatTime;//创建       时间
+    private String creatTime;//创建时间
     private String emailAddress;//邮箱地址
     private String address;//城市
     private String headPortrait;//头像url地址

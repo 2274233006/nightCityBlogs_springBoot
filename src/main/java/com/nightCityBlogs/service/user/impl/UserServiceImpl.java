@@ -3,13 +3,14 @@ package com.nightCityBlogs.service.user.impl;
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
+import com.nightCityBlogs.mapper.user.SelectMapper;
 import com.nightCityBlogs.pojo.Entity.UserEntity;
 import com.nightCityBlogs.pojo.Param.LoginParam;
 import com.nightCityBlogs.pojo.Param.RegisterParam;
 import com.nightCityBlogs.pojo.Vo.UserVo;
 import com.nightCityBlogs.utils.RedisService;
 import com.nightCityBlogs.utils.RespStatus;
-import com.nightCityBlogs.mapper.UserMapper;
+import com.nightCityBlogs.mapper.user.UserMapper;
 import com.nightCityBlogs.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,8 @@ import java.util.Objects;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private SelectMapper selectMapper;
     @Autowired
     private RedisService redisService;
 
@@ -36,7 +39,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public SaResult login(String username, LoginParam loginParam) {
         //根据username查询数据库是否存在
-        UserEntity userEntity = userMapper.selectByName(username);
+        UserEntity userEntity = selectMapper.selectByName(username);
         //为空则存在改用户，返回error：用户不存在
         if (Objects.isNull(userEntity)) {
             return SaResult.error(RespStatus.NO_USER_EXIST.getMsg());
@@ -64,7 +67,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public SaResult register(RegisterParam registerParam) {
-        UserEntity userEntity = userMapper.selectByName(registerParam.getUsername());
+        UserEntity userEntity = selectMapper.selectByName(registerParam.getUsername());
         if(userEntity == null){
             if(registerParam.getAuthCode().equals(redisService.getValue(registerParam.getEmailAddress()))){
                 userMapper.register(registerParam.getUsername(),registerParam.getPassword(),registerParam.getEmailAddress());
@@ -97,8 +100,6 @@ public class UserServiceImpl implements UserService {
         return false;
     }
 
-
-
     @Override
     public SaResult getRole() {
         if(StpUtil.isLogin()){
@@ -106,7 +107,7 @@ public class UserServiceImpl implements UserService {
             Object loginIdByToken = StpUtil.getLoginIdByToken(tokenValue);//根据token获取当前用户id
             if (loginIdByToken != null) {
                 int id = Integer.parseInt(loginIdByToken.toString());
-                UserVo userVo = userMapper.selectById(id);
+                UserVo userVo = selectMapper.selectById(id);
                 String role = userVo.getRole();
                 return SaResult.data(role);
             }
@@ -114,5 +115,18 @@ public class UserServiceImpl implements UserService {
         return SaResult.error(RespStatus.INVALID_TOKEN.getMsg());
     }
 
+    @Override
+    public SaResult close() {
+        if(StpUtil.isLogin()){
+            Object loginIdByToken = StpUtil.getLoginIdByToken(StpUtil.getTokenValue());
+            int id = Integer.parseInt(loginIdByToken.toString());
+//            updateMapper
+        }
+        return SaResult.error(RespStatus.INVALID_TOKEN.getMsg()).setCode(501);
+    }
+    /**
+     * 注销账号
+     *
+     */
 
 }

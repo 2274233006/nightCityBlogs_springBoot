@@ -1,6 +1,6 @@
 package com.nightCityBlogs.utils;
 
-import com.nightCityBlogs.mapper.UserMapper;
+
 import com.qcloud.cos.COSClient;
 import com.qcloud.cos.ClientConfig;
 import com.qcloud.cos.auth.BasicCOSCredentials;
@@ -9,7 +9,7 @@ import com.qcloud.cos.model.ObjectMetadata;
 import com.qcloud.cos.model.PutObjectRequest;
 import com.qcloud.cos.model.PutObjectResult;
 import com.qcloud.cos.region.Region;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedInputStream;
@@ -19,11 +19,9 @@ import java.net.URL;
 import java.util.Date;
 
 public class COSUploadUtil {
-    @Autowired
-    private UserMapper userMapper;
     // 初始化用户身份信息
-    String secretId = "AKID5STFn78yc1A5kALkwwlNjpgHchX8vVqz";
-    String secretKey = "zkGXt20kFUVNDUXKsHalkZDettfDWcZI";
+    String secretId = "AKIDBNUSGyWrARULyMXVGArLcfU6UeZFjzIe";
+    String secretKey = "LVRAf0AG9sQltrgJl03xjMmz2rVyHNI2";
     // 地域
     String bucketRegion = "ap-shanghai";
     // bucket名称
@@ -62,9 +60,11 @@ public class COSUploadUtil {
         if (putObjectResult.getETag() != null) {
             System.out.println("COS上传成功！正在输出URL");
             Date expiration = new Date(new Date().getTime() + 5 * 60 * 10000); // 5小时
-            URL url = cosClient.generatePresignedUrl(bucketName, basicPath + userid + "/" + filename, expiration);
-            System.out.println(url.toString());
-            return url.toString();
+            URL generatePresignedUrl = cosClient.generatePresignedUrl(bucketName, basicPath + userid + "/" + filename, expiration);
+            String url = generatePresignedUrl.toString();
+            String newUrl = urlJoint(url);
+            System.out.println(newUrl);
+            return newUrl;
         } else {
             System.out.println("COS上传失败");
             return "false";
@@ -75,4 +75,14 @@ public class COSUploadUtil {
     public void destory(COSClient cosClient) {
         cosClient.shutdown();
     }
+    private String urlJoint(String url){
+        String newUrl = null;
+        int index = url.indexOf("?sign");
+        if (index != -1) {
+            newUrl=url.substring(0, index);
+        }
+        assert newUrl != null;
+        return newUrl.replace("http://", "https://");
+    }
+
 }

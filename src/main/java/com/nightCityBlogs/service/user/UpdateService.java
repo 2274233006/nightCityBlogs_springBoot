@@ -12,4 +12,8 @@ public interface UpdateService {
     SaResult updateEmail(UpdateParam updateParam);
 
     SaResult uploadImg(MultipartFile file) throws IOException;
+
+    SaResult updatePassword(UpdateParam updateParam);
+
+    SaResult unsubscribe(UpdateParam updateParam);
 }

@@ -39,5 +39,13 @@ public class MailController {
     public SaResult sendTextMail(@PathVariable String emailAddress) {
         return sendMaliService.sendTextMail(emailAddress);
     }
+    /**
+     * 用户留言渠道
+     */
+    @PostMapping("/leaveWord")
+    public SaResult leaveWord(@RequestBody String message){
+        System.out.println(message);
+        return sendMaliService.leaveWord(message);
+    }
 }
 

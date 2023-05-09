@@ -51,4 +51,10 @@ public class SendMaliService {
         sendMailUtil.sendTextMailMessage(emailAddress, "nightCityBlogs验证码", text.toString());
         return SaResult.ok("验证码已发送至邮箱，有效期五分钟，请及时查收");
     }
+
+    public SaResult leaveWord(String message) {
+        sendMailUtil.checkMail("2274233006@qq.com", "nightCityBlogs留言", message);
+        sendMailUtil.sendTextMailMessage("2274233006@qq.com", "nightCityBlogs留言", message);
+        return SaResult.ok("发送成功！");
+    }
 }

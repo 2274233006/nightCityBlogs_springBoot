@@ -19,6 +19,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+
     /**
      * 登录
      *
@@ -65,4 +66,9 @@ public class UserController {
     public SaResult getRole() {
         return userService.getRole();
     }
+    @PostMapping("/close")
+    public SaResult close(){
+        return userService.close();
+    }
+
 }
