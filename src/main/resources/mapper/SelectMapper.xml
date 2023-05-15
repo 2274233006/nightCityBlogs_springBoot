@@ -11,4 +11,10 @@
         from userData
         where id = #{id}
     </select>
+    <select id="selectUserNumber" resultType="java.lang.Integer">
+        select count(id) from userData
+    </select>
+    <select id="selectArticleNumber" resultType="java.lang.Integer">
+        select count(id) from article
+    </select>
 </mapper>

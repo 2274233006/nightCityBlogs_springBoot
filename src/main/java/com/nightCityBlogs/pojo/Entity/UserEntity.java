@@ -16,4 +16,6 @@ public class UserEntity {
     private String creatTime;//创建时间
     private String updateTime;//更新时间
     private String address;//城市
+    private int number;//数据总条数
 }
+

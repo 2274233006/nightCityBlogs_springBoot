@@ -10,4 +10,8 @@ public interface SelectMapper {
 
     UserEntity selectByName(String username);
     UserVo selectById(int id);
+
+    int selectUserNumber();
+
+    int selectArticleNumber();
 }

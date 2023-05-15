@@ -1,7 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nightCityBlogs.mapper.admin.AdminMapper">
+    <update id="uploadImg">
+        update article
+        set banner = #{url}
+        where title = #{title};
+    </update>
+    <update id="updateUser">
+        update userData
+        set userName     = #{userName},
+            password     = #{password},
+            role         = #{role},
+            emailAddress = #{emailAddress},
+            headPortrait = #{headPortrait},
+            address      = #{address}
+        where id = #{id}
+    </update>
+    <update id="updateImg">
+        update article
+        set banner = #{url}
+        where title = #{title}
+    </update>
+    <update id="updateArticle">
+        update article
+        set title          = #{title},
+            summary        = #{summary},
+            classification = #{classification},
+            contents       = #{contents}
+            where id = #{id}
+    </update>
+    <delete id="deleteUser">
+        delete
+        from userData
+        where userName = #{username}
+    </delete>
+    <delete id="deleteArticle">
+        delete
+        from article
+        where title = #{title}
+    </delete>
     <select id="getUser" resultType="com.nightCityBlogs.pojo.Entity.UserEntity">
-        select * from userData
+        select *
+        from userData
+        order by id
+        limit 10 offset #{offset}
     </select>
+    <select id="selectUserByUsername" resultType="com.nightCityBlogs.pojo.Entity.UserEntity">
+        select *
+        from userData
+        where userName = #{username}
+    </select>
+    <select id="selectArticleByTitle" resultType="com.nightCityBlogs.pojo.Entity.ArticleEntity">
+        select *
+        from article
+        where title = #{title}
+    </select>
+    <select id="getArticleList" resultType="com.nightCityBlogs.pojo.Entity.ArticleEntity">
+        select *
+        from article
+        order by id
+        limit 10 offset #{offset}
+    </select>
+    <select id="selectUserByTitle" resultType="com.nightCityBlogs.pojo.Entity.ArticleEntity">
+        select *
+        from article
+        where title = #{title}
+    </select>
+    <insert id="publishArticle">
+        insert into article (title, summary, classification, contents)
+        values (#{title}, #{summary}, #{classification}, #{contents})
+    </insert>
 </mapper>
