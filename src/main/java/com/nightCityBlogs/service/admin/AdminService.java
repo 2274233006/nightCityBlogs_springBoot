@@ -27,4 +27,5 @@ public interface AdminService {
     SaResult updateImg(MultipartFile file, String title) throws IOException;
 
     SaResult updateArticle(ArticleParam articleParam);
+
 }

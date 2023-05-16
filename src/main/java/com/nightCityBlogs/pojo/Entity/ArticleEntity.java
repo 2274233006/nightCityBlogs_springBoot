@@ -17,4 +17,5 @@ public class ArticleEntity {
     private int commentsCount;//评论数
     private String contents;//文章内容
     private String classification;// 分类
+    private String isFocus;//是否焦点
 }

@@ -19,7 +19,7 @@ public interface AdminMapper {
 
     ArticleEntity selectArticleByTitle(String title);
 
-    Boolean publishArticle(String title, String summary, String classification, String contents);
+    Boolean publishArticle(String title, String summary, String classification, String contents, String isFocus);
 
     List<ArticleEntity> getArticleList(int offSet);
 
@@ -29,5 +29,6 @@ public interface AdminMapper {
 
     Boolean updateImg(String url, String title);
 
-    Boolean updateArticle(int id, String title, String summary, String classification, String contents);
+    Boolean updateArticle(int id, String title, String summary, String classification, String contents, String isFocus);
+
 }

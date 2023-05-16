@@ -10,4 +10,10 @@ public interface ArticleMapper {
      List<ArticleEntity> getArticleAll();
 
      ArticleEntity getArticle(String id);
+
+     List<ArticleEntity> getCategorizedItems(String classify);
+
+     Boolean addViewsCount(int i);
+
+     List<ArticleEntity> getFocusArticle();
 }

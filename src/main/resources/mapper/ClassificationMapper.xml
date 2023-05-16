@@ -1,8 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nightCityBlogs.mapper.classification.ClassificationMapper">
+    <insert id="addClassification">
+        insert into classification (classification) value (#{classification})
+    </insert>
+    <update id="updateClassification">
+        update classification
+        set classification = #{newClassification}
+        where id = #{id};
+    </update>
+    <update id="updateArticleClassification">
+        update article
+        set classification = #{newClassification}
+        where classification = #{classification};
+    </update>
+    <delete id="deleteClassification">
+        delete from classification where id = #{id}
+    </delete>
 
     <select id="getAll" resultType="com.nightCityBlogs.pojo.Entity.ClassificationEntity">
-        select * from classification
+        select *
+        from classification
+        <if test="offset != null">
+            order by id
+            limit 10 offset #{offset}
+        </if>
+    </select>
+    <select id="selectArticeByClassification" resultType="java.lang.Boolean">
+        select * from article where classification = #{classification}
+    </select>
+    <select id="selectUserNumber" resultType="java.lang.Integer">
+        select count(id) from classification
     </select>
 </mapper>

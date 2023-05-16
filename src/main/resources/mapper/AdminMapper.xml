@@ -26,8 +26,9 @@
         set title          = #{title},
             summary        = #{summary},
             classification = #{classification},
-            contents       = #{contents}
-            where id = #{id}
+            contents       = #{contents},
+            isFocus        = #{isFocus}
+        where id = #{id}
     </update>
     <delete id="deleteUser">
         delete
@@ -67,7 +68,7 @@
         where title = #{title}
     </select>
     <insert id="publishArticle">
-        insert into article (title, summary, classification, contents)
-        values (#{title}, #{summary}, #{classification}, #{contents})
+        insert into article (title, summary, classification, contents, isFocus)
+        values (#{title}, #{summary}, #{classification}, #{contents}, #{isFocus})
     </insert>
 </mapper>

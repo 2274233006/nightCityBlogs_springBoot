@@ -45,35 +45,77 @@ public class adminController {
         return adminService.deleteUser(userName);
     }
 
+    /**
+     * 修改指定用户信息
+     * @param userEntity
+     * @return
+     */
     @PutMapping("/updateUser")
     public SaResult updateUser(@RequestBody UserEntity userEntity){
         return adminService.updateUser(userEntity);
     }
+
+    /**
+     * 上传文章图片文件
+     * @param file
+     * @param title
+     * @return
+     * @throws Exception
+     */
     @PostMapping("/uploadImg/{title}")
     public SaResult uploadImg(MultipartFile file, @PathVariable String title) throws Exception {
         return adminService.uploadImg(file,title);
     }
+
+    /**
+     * 修改文章图片
+     * @param file
+     * @param title
+     * @return
+     * @throws Exception
+     */
     @PostMapping("/updateImg/{title}")
     public SaResult updateImg(MultipartFile file, @PathVariable String title) throws Exception {
         return adminService.updateImg(file,title);
     }
+
+    /**
+     * 发布文章
+     * @param articleParam
+     * @return
+     */
     @PutMapping("/publishArticle")
     public SaResult publishArticle(@RequestBody ArticleParam articleParam){
         return adminService.publishArticle(articleParam);
     }
+
+    /**
+     * 修改文章
+     * @param articleParam
+     * @return
+     */
     @PutMapping("/updateArticle")
     public SaResult updateArticle(@RequestBody ArticleParam articleParam){
         return adminService.updateArticle(articleParam);
     }
+    /**
+     * 获取文章列表
+     * @param offset
+     * @return
+     */
     @GetMapping("/getArticleList/{offset}")
     public SaResult getArticleList(@PathVariable String offset){
         int offSet = Integer.parseInt(offset);
         return adminService.getArticleList(offSet);
     }
 
+    /**
+     * 删除指定文章
+     * @param title
+     * @return
+     */
     @DeleteMapping("/deleteArticle/{title}")
     public SaResult deleteArticle(@PathVariable String title){
         return adminService.deleteArticle(title);
     }
-
 }

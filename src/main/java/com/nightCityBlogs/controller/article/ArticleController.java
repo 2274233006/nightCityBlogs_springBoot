@@ -25,4 +25,18 @@ public class ArticleController {
         ArticleEntity article = articleService.getArticle(id);
         return SaResult.data(article);
     }
+    @GetMapping("/categorizedItems/{classify}")
+    public SaResult getCategorizedItems(@PathVariable String classify){
+        return articleService.getCategorizedItems(classify);
+    }
+    @PutMapping("/addViewsCount/{id}")
+    public SaResult addViewsCount(@PathVariable String id){
+        int i = Integer.parseInt(id);
+        return articleService.addViewsCount(i);
+    }
+    @GetMapping("/getFocusArticle")
+    public SaResult getFocusArticle(){
+        return articleService.getFocusArticle();
+    }
+
 }

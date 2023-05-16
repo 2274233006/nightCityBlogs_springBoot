@@ -3,8 +3,10 @@ package com.nightCityBlogs.service.admin.Impl;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
 import com.nightCityBlogs.mapper.admin.AdminMapper;
+import com.nightCityBlogs.mapper.article.ArticleMapper;
 import com.nightCityBlogs.mapper.user.SelectMapper;
 import com.nightCityBlogs.pojo.Entity.ArticleEntity;
+import com.nightCityBlogs.pojo.Entity.ClassificationEntity;
 import com.nightCityBlogs.pojo.Entity.UserEntity;
 import com.nightCityBlogs.pojo.Param.ArticleParam;
 import com.nightCityBlogs.pojo.Vo.UserVo;
@@ -24,6 +26,8 @@ public class AdminServiceImpl implements AdminService {
     private AdminMapper adminMapper;
     @Autowired
     private SelectMapper selectMapper;
+    @Autowired
+    private ArticleMapper articleMapper;
 
     @Override
     public SaResult getUser(int offSet) {
@@ -93,10 +97,15 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public SaResult publishArticle(ArticleParam articleParam) {
         if(StpUtil.isLogin()){
+            List<ArticleEntity> focusArticle = articleMapper.getFocusArticle();
+            if(focusArticle.size()>=3&&articleParam.getIsFocus().equals("true")){
+                return SaResult.error("焦点文章最多三个");
+            }
             Boolean aBoolean = adminMapper.publishArticle(articleParam.getTitle(),
                     articleParam.getSummary(),
                     articleParam.getClassification(),
-                    articleParam.getContents());
+                    articleParam.getContents(),
+                    articleParam.getIsFocus());
             if(aBoolean){
                 return SaResult.ok("上传成功！");
             }
@@ -127,12 +136,17 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public SaResult updateArticle(ArticleParam articleParam) {
         if(StpUtil.isLogin()){
+            List<ArticleEntity> focusArticle = articleMapper.getFocusArticle();
+            if(focusArticle.size()>=3&&articleParam.getIsFocus().equals("true")){
+                return SaResult.error("焦点文章最多三个");
+            }
             Boolean aBoolean = adminMapper.updateArticle(
                     articleParam.getId(),
                     articleParam.getTitle(),
                     articleParam.getSummary(),
                     articleParam.getClassification(),
-                    articleParam.getContents());
+                    articleParam.getContents(),
+                    articleParam.getIsFocus());
             if(aBoolean){
                 return SaResult.ok("上传成功！");
             }
@@ -140,6 +154,7 @@ public class AdminServiceImpl implements AdminService {
         }
         return SaResult.error("token验证失败，请重新登录").setCode(501);
     }
+
 
     @Override
     public SaResult getArticleList(int offSet) {
