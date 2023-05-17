@@ -3,7 +3,9 @@ package com.nightCityBlogs.pojo.Entity;
 import lombok.Data;
 
 /**
- * user表实体类
+ * 用户信息实体类
+ * @version 1.0
+ * @author NightCity
  */
 @Data/*@data注解自动创建了类的get，set和toString方法**/
 public class UserEntity {

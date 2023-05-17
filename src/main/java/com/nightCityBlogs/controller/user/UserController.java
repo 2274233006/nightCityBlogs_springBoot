@@ -4,8 +4,10 @@ import cn.dev33.satoken.util.SaResult;
 import com.nightCityBlogs.pojo.Param.LoginParam;
 import com.nightCityBlogs.pojo.Param.RegisterParam;
 import com.nightCityBlogs.service.user.UserService;
+import com.nightCityBlogs.utils.SendMaliService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 /**
  * 用户操作接口
  *
@@ -18,8 +20,6 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     @Autowired
     private UserService userService;
-
-
     /**
      * 登录
      *
@@ -37,9 +37,29 @@ public class UserController {
         return userService.login(loginParam.getUsername(), loginParam);
     }
 
+    /**
+     * 注册用户
+     *
+     * @param registerParam 注册信息
+     * @return SaResult
+     */
     @PutMapping("/register")
     public SaResult register(@RequestBody RegisterParam registerParam) {
         return userService.register(registerParam);
+    }
+
+    /**
+     * 忘记密码
+     *
+     * @return
+     */
+    @PostMapping("/forgetSendEmail/{email}/{username}")
+    public SaResult forgetSendEmail(@PathVariable String email, @PathVariable String username) {
+        return userService.forgetSendEmail(email, username);
+    }
+    @PostMapping("/forget/{authCode}/{newPassword}/{email}/{username}")
+    public SaResult forget(@PathVariable String authCode, @PathVariable String newPassword, @PathVariable String email, @PathVariable String username) {
+        return userService.forget(authCode, newPassword,email,username);
     }
 
     /**
@@ -62,13 +82,13 @@ public class UserController {
         return userService.tokenVerify();
     }
 
+    /**
+     * 获取当前用户权限
+     *
+     * @return SaResult
+     */
     @PostMapping("/role")
     public SaResult getRole() {
         return userService.getRole();
     }
-    @PostMapping("/close")
-    public SaResult close(){
-        return userService.close();
-    }
-
 }

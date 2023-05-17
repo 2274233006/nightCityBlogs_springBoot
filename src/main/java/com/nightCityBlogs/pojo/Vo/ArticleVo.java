@@ -1,7 +1,12 @@
 package com.nightCityBlogs.pojo.Vo;
 
 import lombok.Data;
-
+/**
+ * 传入前端
+ * 文章信息实体类
+ * @version 1.0
+ * @author NightCity
+ */
 @Data
 public class ArticleVo {
     private int id;

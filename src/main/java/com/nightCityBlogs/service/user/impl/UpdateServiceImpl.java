@@ -64,7 +64,6 @@ public class UpdateServiceImpl implements UpdateService {
         Object loginIdByToken = StpUtil.getLoginIdByToken(StpUtil.getTokenValue());
         String key = loginIdByToken.toString();
         int id = Integer.parseInt(loginIdByToken.toString());
-        System.out.println(redisService.getValue(key));
         if (updateParam.getAuthCode().equals(redisService.getValue(key))) {
             updateMapper.updateEmail(id, newEmail);
             UserVo userVo = selectMapper.selectById(id);
@@ -82,10 +81,10 @@ public class UpdateServiceImpl implements UpdateService {
             String username = userVo1.getUsername();
             COSUploadUtil cosUploadUtil = new COSUploadUtil();
             String url = cosUploadUtil.upLoadFile2COS(file.getSize(), username + "HeadPortrait.jpg", file, "头像");
-            if(Objects.equals(url, "false"))
+            if (Objects.equals(url, "false"))
                 return SaResult.error("COS上传失败");
             System.out.println(url);
-            updateMapper.uploadImg(url,id);
+            updateMapper.uploadImg(url, id);
             UserVo userVo = selectMapper.selectById(id);
             return SaResult.data(userVo).setMsg("上传成功！");
         }
@@ -94,13 +93,13 @@ public class UpdateServiceImpl implements UpdateService {
 
     @Override
     public SaResult updatePassword(UpdateParam updateParam) {
-        if(StpUtil.isLogin()){
+        if (StpUtil.isLogin()) {
             Object loginIdByToken = StpUtil.getLoginIdByToken(StpUtil.getTokenValue());
             int id = Integer.parseInt(loginIdByToken.toString());
             UserEntity userEntity = selectMapper.selectByName(updateParam.getUsername());
-            if(userEntity.getPassword().equals(updateParam.getPassword())){
-                if(redisService.getValue(loginIdByToken.toString()).equals(updateParam.getAuthCode())){
-                    updateMapper.updatePassword(updateParam.getNewPassword(),id);
+            if (userEntity.getPassword().equals(updateParam.getPassword())) {
+                if (redisService.getValue(loginIdByToken.toString()).equals(updateParam.getAuthCode())) {
+                    updateMapper.updatePassword(updateParam.getNewPassword(), id);
                     return SaResult.ok("密码修改成功！正在跳转登录页面......");
                 }
                 return SaResult.error("验证码错误");
@@ -113,12 +112,12 @@ public class UpdateServiceImpl implements UpdateService {
 
     @Override
     public SaResult unsubscribe(UpdateParam updateParam) {
-        if(StpUtil.isLogin()){
+        if (StpUtil.isLogin()) {
             Object loginIdByToken = StpUtil.getLoginIdByToken(StpUtil.getTokenValue());
             int id = Integer.parseInt(loginIdByToken.toString());
             UserEntity userEntity = selectMapper.selectByName(updateParam.getUsername());
-            if(userEntity.getPassword().equals(updateParam.getPassword())){
-                if(redisService.getValue(loginIdByToken.toString()).equals(updateParam.getAuthCode())){
+            if (userEntity.getPassword().equals(updateParam.getPassword())) {
+                if (redisService.getValue(loginIdByToken.toString()).equals(updateParam.getAuthCode())) {
                     deleteMapper.unsubscribe(id);
                     return SaResult.ok("账户以注销！");
                 }

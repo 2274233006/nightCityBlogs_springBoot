@@ -48,22 +48,24 @@ public class ClassificationServiceImpl implements ClassificationService {
 
     @Override
     public SaResult deleteClassification(String id) {
-        if(StpUtil.isLogin()){
+        if (StpUtil.isLogin()) {
             Boolean aBoolean = classificationMapper.deleteClassification(id);
-            if(aBoolean){
-                return  SaResult.ok("删除成功！");
-            }return SaResult.error("数据库操作失败");
+            if (aBoolean) {
+                return SaResult.ok("删除成功！");
+            }
+            return SaResult.error("数据库操作失败");
         }
         return SaResult.error("token验证失败，请重新登录").setCode(501);
     }
 
     @Override
     public SaResult addClassification(String classification) {
-        if(StpUtil.isLogin()){
+        if (StpUtil.isLogin()) {
             Boolean aBoolean = classificationMapper.addClassification(classification);
-            if(aBoolean){
-                return  SaResult.ok("添加成功！");
-            }return SaResult.error("数据库操作失败");
+            if (aBoolean) {
+                return SaResult.ok("添加成功！");
+            }
+            return SaResult.error("数据库操作失败");
         }
         return SaResult.error("token验证失败，请重新登录").setCode(501);
     }

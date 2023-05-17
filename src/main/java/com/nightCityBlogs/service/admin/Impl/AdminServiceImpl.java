@@ -6,7 +6,6 @@ import com.nightCityBlogs.mapper.admin.AdminMapper;
 import com.nightCityBlogs.mapper.article.ArticleMapper;
 import com.nightCityBlogs.mapper.user.SelectMapper;
 import com.nightCityBlogs.pojo.Entity.ArticleEntity;
-import com.nightCityBlogs.pojo.Entity.ClassificationEntity;
 import com.nightCityBlogs.pojo.Entity.UserEntity;
 import com.nightCityBlogs.pojo.Param.ArticleParam;
 import com.nightCityBlogs.pojo.Vo.UserVo;
@@ -31,20 +30,21 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public SaResult getUser(int offSet) {
-        if(StpUtil.isLogin()){
+        if (StpUtil.isLogin()) {
             List<UserEntity> user = adminMapper.getUser(offSet);
             int i = selectMapper.selectUserNumber();
             return SaResult.data(user).setMsg(Integer.toString(i));
         }
         return SaResult.error("token验证失效");
     }
+
     @Override
     public SaResult roleVerification() {
-        if(StpUtil.isLogin()){
+        if (StpUtil.isLogin()) {
             Object loginIdByToken = StpUtil.getLoginIdByToken(StpUtil.getTokenValue());
             int id = Integer.parseInt(loginIdByToken.toString());
             UserVo userVo = selectMapper.selectById(id);
-            if(userVo.getRole().equals("admin")){
+            if (userVo.getRole().equals("admin")) {
                 return SaResult.ok();
             }
             return SaResult.error("当前用户非管理员");
@@ -54,9 +54,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public SaResult deleteUser(String username) {
-        if(StpUtil.isLogin()){
+        if (StpUtil.isLogin()) {
             UserEntity userEntity = adminMapper.selectUserByUsername(username);
-            if(userEntity != null){
+            if (userEntity != null) {
                 adminMapper.deleteUser(username);
                 return SaResult.ok("用户删除成功！");
             }
@@ -67,8 +67,8 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public SaResult updateUser(UserEntity userEntity) {
-        if(StpUtil.isLogin()){
-            adminMapper.updateUser(userEntity.getId(),userEntity.getUserName(),userEntity.getPassword(),userEntity.getRole(),userEntity.getEmailAddress(),userEntity.getHeadPortrait(),userEntity.getAddress());
+        if (StpUtil.isLogin()) {
+            adminMapper.updateUser(userEntity.getId(), userEntity.getUserName(), userEntity.getPassword(), userEntity.getRole(), userEntity.getEmailAddress(), userEntity.getHeadPortrait(), userEntity.getAddress());
             return SaResult.ok("修改成功");
         }
         return SaResult.error("token验证失败，请重新登录").setCode(501);
@@ -78,14 +78,14 @@ public class AdminServiceImpl implements AdminService {
     public SaResult uploadImg(MultipartFile file, String title) throws IOException {
         if (StpUtil.isLogin()) {
             ArticleEntity articleEntity = adminMapper.selectArticleByTitle(title);
-            if(articleEntity!=null){
+            if (articleEntity != null) {
                 COSUploadUtil cosUploadUtil = new COSUploadUtil();
                 String url = cosUploadUtil.upLoadFile2COS(file.getSize(), title + "banner.jpg", file, "文章img");
-                if(Objects.equals(url, "false"))
+                if (Objects.equals(url, "false"))
                     return SaResult.error("COS上传失败");
                 System.out.println(url);
                 Boolean aBoolean = adminMapper.uploadImg(url, title);
-                if(aBoolean)
+                if (aBoolean)
                     return SaResult.ok("上传成功！");
                 else return SaResult.error("上传数据库失败");
             }
@@ -96,9 +96,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public SaResult publishArticle(ArticleParam articleParam) {
-        if(StpUtil.isLogin()){
+        if (StpUtil.isLogin()) {
             List<ArticleEntity> focusArticle = articleMapper.getFocusArticle();
-            if(focusArticle.size()>=3&&articleParam.getIsFocus().equals("true")){
+            if (focusArticle.size() >= 3 && articleParam.getIsFocus().equals("true")) {
                 return SaResult.error("焦点文章最多三个");
             }
             Boolean aBoolean = adminMapper.publishArticle(articleParam.getTitle(),
@@ -106,25 +106,26 @@ public class AdminServiceImpl implements AdminService {
                     articleParam.getClassification(),
                     articleParam.getContents(),
                     articleParam.getIsFocus());
-            if(aBoolean){
+            if (aBoolean) {
                 return SaResult.ok("上传成功！");
             }
-           return SaResult.error("上传数据库失败");
+            return SaResult.error("上传数据库失败");
         }
         return SaResult.error("token验证失败，请重新登录").setCode(501);
     }
+
     @Override
     public SaResult updateImg(MultipartFile file, String title) throws IOException {
         if (StpUtil.isLogin()) {
             ArticleEntity articleEntity = adminMapper.selectArticleByTitle(title);
-            if(articleEntity!=null){
+            if (articleEntity != null) {
                 COSUploadUtil cosUploadUtil = new COSUploadUtil();
                 String url = cosUploadUtil.upLoadFile2COS(file.getSize(), title + "banner.jpg", file, "文章img");
-                if(Objects.equals(url, "false"))
+                if (Objects.equals(url, "false"))
                     return SaResult.error("COS上传失败");
                 System.out.println(url);
-                Boolean aBoolean = adminMapper.updateImg(url,title);
-                if(aBoolean)
+                Boolean aBoolean = adminMapper.updateImg(url, title);
+                if (aBoolean)
                     return SaResult.ok("上传成功！");
                 else return SaResult.error("上传数据库失败");
             }
@@ -135,9 +136,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public SaResult updateArticle(ArticleParam articleParam) {
-        if(StpUtil.isLogin()){
+        if (StpUtil.isLogin()) {
             List<ArticleEntity> focusArticle = articleMapper.getFocusArticle();
-            if(focusArticle.size()>=3&&articleParam.getIsFocus().equals("true")){
+            if (focusArticle.size() >= 3 && articleParam.getIsFocus().equals("true")) {
                 return SaResult.error("焦点文章最多三个");
             }
             Boolean aBoolean = adminMapper.updateArticle(
@@ -147,7 +148,7 @@ public class AdminServiceImpl implements AdminService {
                     articleParam.getClassification(),
                     articleParam.getContents(),
                     articleParam.getIsFocus());
-            if(aBoolean){
+            if (aBoolean) {
                 return SaResult.ok("上传成功！");
             }
             return SaResult.error("上传数据库失败");
@@ -158,7 +159,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public SaResult getArticleList(int offSet) {
-        if(StpUtil.isLogin()){
+        if (StpUtil.isLogin()) {
             List<ArticleEntity> article = adminMapper.getArticleList(offSet);
             int i = selectMapper.selectArticleNumber();
             return SaResult.data(article).setMsg(Integer.toString(i));
@@ -168,9 +169,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public SaResult deleteArticle(String title) {
-        if(StpUtil.isLogin()){
+        if (StpUtil.isLogin()) {
             ArticleEntity articleEntity = adminMapper.selectUserByTitle(title);
-            if(articleEntity != null){
+            if (articleEntity != null) {
                 adminMapper.deleteArticle(title);
                 return SaResult.ok("用户删除成功！");
             }

@@ -9,6 +9,8 @@
     <select id="getArticleAll" resultType="com.nightCityBlogs.pojo.Entity.ArticleEntity">
         select *
         from article
+        order by id
+        limit 5 offset #{offset}
     </select>
     <select id="getArticle" resultType="com.nightCityBlogs.pojo.Entity.ArticleEntity">
         select *
@@ -19,8 +21,20 @@
         select *
         from article
         where classification = #{classify}
+        limit #{offset},5
     </select>
     <select id="getFocusArticle" resultType="com.nightCityBlogs.pojo.Entity.ArticleEntity">
-        select * from article where isFocus = 'true'
+        select *
+        from article
+        where isFocus = 'true'
+    </select>
+    <select id="selectArticleClassNumber" resultType="java.lang.Integer">
+        select count(id)
+        from article
+        where classification = #{classify}
+    </select>
+    <select id="selectArticleNumber" resultType="java.lang.Integer">
+        select count(id)
+        from article
     </select>
 </mapper>

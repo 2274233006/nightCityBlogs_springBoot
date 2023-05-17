@@ -15,25 +15,53 @@ public class ArticleController {
     @Autowired
     private ArticleService articleService;
 
-    @GetMapping("/all")
-    private SaResult getArticleAll(){
-        List<ArticleEntity> article = articleService.getArticleAll();
-        return SaResult.data(article);
+    /**
+     * 获取所有文章
+     * @return SaResult
+     */
+    @GetMapping("/all/{offset}")
+    private SaResult getArticleAll(@PathVariable String offset){
+        int offSet = Integer.parseInt(offset);
+        return articleService.getArticleAll(offSet);
     }
+
+    /**
+     * 获取对应id文章
+     * @param id id
+     * @return SaResult
+     */
     @GetMapping("/getArticle/{id}")
     private SaResult getArticle(@PathVariable String id){
         ArticleEntity article = articleService.getArticle(id);
         return SaResult.data(article);
     }
-    @GetMapping("/categorizedItems/{classify}")
-    public SaResult getCategorizedItems(@PathVariable String classify){
-        return articleService.getCategorizedItems(classify);
+
+    /**
+     * 获取对应分类文章
+     * @param classify 分类
+     * @return SaResult
+     */
+    @GetMapping("/categorizedItems/{classify}/{offset}")
+    public SaResult getCategorizedItems(@PathVariable String classify, @PathVariable String offset){
+        int offSet = Integer.parseInt(offset);
+        return articleService.getCategorizedItems(classify,offSet);
     }
+
+    /**
+     * 增加文章浏览量
+     * @param id id
+     * @return SaResult
+     */
     @PutMapping("/addViewsCount/{id}")
     public SaResult addViewsCount(@PathVariable String id){
         int i = Integer.parseInt(id);
         return articleService.addViewsCount(i);
     }
+
+    /**
+     * 获取焦点文章
+     * @return SaResult
+     */
     @GetMapping("/getFocusArticle")
     public SaResult getFocusArticle(){
         return articleService.getFocusArticle();

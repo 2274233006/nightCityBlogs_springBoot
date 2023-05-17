@@ -75,11 +75,12 @@ public class COSUploadUtil {
     public void destory(COSClient cosClient) {
         cosClient.shutdown();
     }
-    private String urlJoint(String url){
+
+    private String urlJoint(String url) {
         String newUrl = null;
         int index = url.indexOf("?sign");
         if (index != -1) {
-            newUrl=url.substring(0, index);
+            newUrl = url.substring(0, index);
         }
         assert newUrl != null;
         return newUrl.replace("http://", "https://");

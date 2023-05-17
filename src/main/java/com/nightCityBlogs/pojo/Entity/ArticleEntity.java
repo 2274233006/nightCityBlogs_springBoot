@@ -3,6 +3,11 @@ package com.nightCityBlogs.pojo.Entity;
 import lombok.Data;
 import lombok.ToString;
 
+/**
+ * 文章信息实体类
+ * @version 1.0
+ * @author NightCity
+ */
 @Data
 @ToString
 public class ArticleEntity {

@@ -3,14 +3,12 @@ package com.nightCityBlogs.service.article;
 import cn.dev33.satoken.util.SaResult;
 import com.nightCityBlogs.pojo.Entity.ArticleEntity;
 
-import java.util.List;
-
 public interface ArticleService {
-    List<ArticleEntity> getArticleAll();
+    SaResult getArticleAll(int offSet);
 
     ArticleEntity getArticle(String id);
 
-    SaResult getCategorizedItems(String classify);
+    SaResult getCategorizedItems(String classify, int offset);
 
     SaResult addViewsCount(int i);
 

@@ -15,5 +15,7 @@ public interface UserService {
     SaResult getRole();
 
 
-    SaResult close();
+    SaResult forgetSendEmail(String email, String username);
+
+    SaResult forget(String authCode, String newPassword, String email, String username);
 }

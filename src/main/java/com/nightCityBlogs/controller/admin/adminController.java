@@ -37,7 +37,7 @@ public class adminController {
 
     /**
      * 删除指定用户
-     * @param userName
+     * @param userName 用户名
      * @return SaResult
      */
     @DeleteMapping("/deleteUser/{userName}")
@@ -46,9 +46,9 @@ public class adminController {
     }
 
     /**
-     * 修改指定用户信息
-     * @param userEntity
-     * @return
+     * 修改指定id用户信息
+     * @param userEntity 用户信息实体类
+     * @return SaResult
      */
     @PutMapping("/updateUser")
     public SaResult updateUser(@RequestBody UserEntity userEntity){
@@ -57,10 +57,10 @@ public class adminController {
 
     /**
      * 上传文章图片文件
-     * @param file
-     * @param title
-     * @return
-     * @throws Exception
+     * @param file 文件
+     * @param title 对应文章标题
+     * @return SaResult
+     * @throws Exception IOException
      */
     @PostMapping("/uploadImg/{title}")
     public SaResult uploadImg(MultipartFile file, @PathVariable String title) throws Exception {
@@ -69,10 +69,10 @@ public class adminController {
 
     /**
      * 修改文章图片
-     * @param file
-     * @param title
-     * @return
-     * @throws Exception
+     * @param file 文件
+     * @param title 标题
+     * @return SaResult
+     * @throws Exception IOException
      */
     @PostMapping("/updateImg/{title}")
     public SaResult updateImg(MultipartFile file, @PathVariable String title) throws Exception {
@@ -81,8 +81,8 @@ public class adminController {
 
     /**
      * 发布文章
-     * @param articleParam
-     * @return
+     * @param articleParam 文章信息实体类
+     * @return SaResult
      */
     @PutMapping("/publishArticle")
     public SaResult publishArticle(@RequestBody ArticleParam articleParam){
@@ -91,8 +91,8 @@ public class adminController {
 
     /**
      * 修改文章
-     * @param articleParam
-     * @return
+     * @param articleParam 文章信息实体类
+     * @return SaResult
      */
     @PutMapping("/updateArticle")
     public SaResult updateArticle(@RequestBody ArticleParam articleParam){
@@ -100,8 +100,8 @@ public class adminController {
     }
     /**
      * 获取文章列表
-     * @param offset
-     * @return
+     * @param offset 偏移量，用户分页查询
+     * @return SaResult
      */
     @GetMapping("/getArticleList/{offset}")
     public SaResult getArticleList(@PathVariable String offset){
@@ -111,8 +111,8 @@ public class adminController {
 
     /**
      * 删除指定文章
-     * @param title
-     * @return
+     * @param title 文章标题
+     * @return SaResult
      */
     @DeleteMapping("/deleteArticle/{title}")
     public SaResult deleteArticle(@PathVariable String title){

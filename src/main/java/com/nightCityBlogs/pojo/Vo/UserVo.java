@@ -6,7 +6,10 @@ import lombok.Data;
 import java.sql.Time;
 
 /**
- * 返回给前端的实体类
+ * 传入前端
+ * 用户信息实体类
+ * @version 1.0
+ * @author NightCity
  */
 @Data
 public class UserVo {

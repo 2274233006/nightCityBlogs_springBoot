@@ -3,7 +3,10 @@ package com.nightCityBlogs.pojo.Param;
 import lombok.Data;
 
 /**
- * 接收前端登录数据的实体类
+ * 前端传入
+ * 登录信息实体类
+ * @version 1.0
+ * @author NightCity
  */
 @Data
 public class LoginParam {

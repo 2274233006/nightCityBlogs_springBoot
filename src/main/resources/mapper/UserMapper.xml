@@ -4,4 +4,9 @@
     <insert id="register">
         insert into userData (userName, password,emailAddress) values (#{username},#{password},#{emailAddress})
     </insert>
+    <update id="updatePassword">
+        update userData
+        set password = #{newPassword}
+        where username = #{username};
+    </update>
 </mapper>

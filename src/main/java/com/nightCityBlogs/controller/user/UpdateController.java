@@ -55,10 +55,22 @@ public class UpdateController {
     public SaResult uploadImg(MultipartFile file) throws Exception {
         return updateService.uploadImg(file);
     }
+
+    /**
+     * 修改密码
+     * @param updateParam 前端传入的数据
+     * @return SaResult
+     */
     @PutMapping("/updatePassword")
     public SaResult updatePassword(@RequestBody UpdateParam updateParam){
         return updateService.updatePassword(updateParam);
     }
+
+    /**
+     * 注销账号
+     * @param updateParam 前端传入的数据
+     * @return SaResult
+     */
     @PostMapping("/unsubscribe")
     public SaResult unsubscribe(@RequestBody UpdateParam updateParam){
         return updateService.unsubscribe(updateParam);

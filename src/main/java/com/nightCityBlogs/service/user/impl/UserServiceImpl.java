@@ -4,6 +4,7 @@ import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
 import com.nightCityBlogs.mapper.user.SelectMapper;
+import com.nightCityBlogs.mapper.user.UpdateMapper;
 import com.nightCityBlogs.pojo.Entity.UserEntity;
 import com.nightCityBlogs.pojo.Param.LoginParam;
 import com.nightCityBlogs.pojo.Param.RegisterParam;
@@ -12,6 +13,7 @@ import com.nightCityBlogs.utils.RedisService;
 import com.nightCityBlogs.utils.RespStatus;
 import com.nightCityBlogs.mapper.user.UserMapper;
 import com.nightCityBlogs.service.user.UserService;
+import com.nightCityBlogs.utils.SendMaliService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,11 @@ public class UserServiceImpl implements UserService {
     private SelectMapper selectMapper;
     @Autowired
     private RedisService redisService;
+    @Autowired
+    private SendMaliService sendMaliService;
+    @Autowired
+    private UpdateMapper updateMapper;
+
 
     /**
      * 通过username字段查询数据库user表，若查询为空则返回用户不存在
@@ -68,9 +75,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public SaResult register(RegisterParam registerParam) {
         UserEntity userEntity = selectMapper.selectByName(registerParam.getUsername());
-        if(userEntity == null){
-            if(registerParam.getAuthCode().equals(redisService.getValue(registerParam.getEmailAddress()))){
-                userMapper.register(registerParam.getUsername(),registerParam.getPassword(),registerParam.getEmailAddress());
+        if (userEntity == null) {
+            if (registerParam.getAuthCode().equals(redisService.getValue(registerParam.getEmailAddress()))) {
+                userMapper.register(registerParam.getUsername(), registerParam.getPassword(), registerParam.getEmailAddress());
                 return SaResult.ok("注册成功！正在跳转登录");
             }
             return SaResult.error("验证码不正确");
@@ -102,7 +109,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public SaResult getRole() {
-        if(StpUtil.isLogin()){
+        if (StpUtil.isLogin()) {
             String tokenValue = StpUtil.getTokenValue();//获取当前用户token
             Object loginIdByToken = StpUtil.getLoginIdByToken(tokenValue);//根据token获取当前用户id
             if (loginIdByToken != null) {
@@ -116,17 +123,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public SaResult close() {
-        if(StpUtil.isLogin()){
-            Object loginIdByToken = StpUtil.getLoginIdByToken(StpUtil.getTokenValue());
-            int id = Integer.parseInt(loginIdByToken.toString());
-//            updateMapper
+    public SaResult forgetSendEmail(String email, String username) {
+        UserEntity userEntity = selectMapper.selectByName(username);
+        if(userEntity!=null){
+                if(userEntity.getEmailAddress().equals(email)){
+               return sendMaliService.sendTextMail(email);
+            }
+            return SaResult.error("与当前账户原邮箱不符");
         }
-        return SaResult.error(RespStatus.INVALID_TOKEN.getMsg()).setCode(501);
+        return SaResult.error("用户不存在！");
     }
-    /**
-     * 注销账号
-     *
-     */
 
+    @Override
+    public SaResult forget(String authCode, String newPassword, String email, String username) {
+        if(authCode.equals(redisService.getValue(email))){
+            userMapper.updatePassword(newPassword,username);
+            return SaResult.ok("修改成功");
+        }
+        return SaResult.error("验证码错误");
+    }
 }

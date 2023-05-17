@@ -9,4 +9,6 @@ import org.apache.ibatis.annotations.Mapper;
 public interface UserMapper {
     //注册
     void register(String username, String password, String emailAddress);
+
+    void updatePassword(String newPassword, String username);
 }
