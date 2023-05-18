@@ -14,6 +14,7 @@ import com.nightCityBlogs.utils.RedisService;
 import com.nightCityBlogs.utils.RespStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -94,12 +95,14 @@ public class UpdateServiceImpl implements UpdateService {
     @Override
     public SaResult updatePassword(UpdateParam updateParam) {
         if (StpUtil.isLogin()) {
+            String password = DigestUtils.md5DigestAsHex(updateParam.getPassword().getBytes());
+            String newPassword = DigestUtils.md5DigestAsHex(updateParam.getNewPassword().getBytes());
             Object loginIdByToken = StpUtil.getLoginIdByToken(StpUtil.getTokenValue());
             int id = Integer.parseInt(loginIdByToken.toString());
             UserEntity userEntity = selectMapper.selectByName(updateParam.getUsername());
-            if (userEntity.getPassword().equals(updateParam.getPassword())) {
+            if (userEntity.getPassword().equals(password)) {
                 if (redisService.getValue(loginIdByToken.toString()).equals(updateParam.getAuthCode())) {
-                    updateMapper.updatePassword(updateParam.getNewPassword(), id);
+                    updateMapper.updatePassword(newPassword, id);
                     return SaResult.ok("密码修改成功！正在跳转登录页面......");
                 }
                 return SaResult.error("验证码错误");
@@ -113,10 +116,11 @@ public class UpdateServiceImpl implements UpdateService {
     @Override
     public SaResult unsubscribe(UpdateParam updateParam) {
         if (StpUtil.isLogin()) {
+            String password = DigestUtils.md5DigestAsHex(updateParam.getPassword().getBytes());
             Object loginIdByToken = StpUtil.getLoginIdByToken(StpUtil.getTokenValue());
             int id = Integer.parseInt(loginIdByToken.toString());
             UserEntity userEntity = selectMapper.selectByName(updateParam.getUsername());
-            if (userEntity.getPassword().equals(updateParam.getPassword())) {
+            if (userEntity.getPassword().equals(password)) {
                 if (redisService.getValue(loginIdByToken.toString()).equals(updateParam.getAuthCode())) {
                     deleteMapper.unsubscribe(id);
                     return SaResult.ok("账户以注销！");

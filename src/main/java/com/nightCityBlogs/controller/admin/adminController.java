@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/admin")
-@CrossOrigin(origins = "http://127.0.0.1:5173", allowCredentials = "true")
+@CrossOrigin(origins = "http://www.nightcity.work:1080", allowCredentials = "true")
 public class adminController {
     @Autowired
     private AdminService adminService;

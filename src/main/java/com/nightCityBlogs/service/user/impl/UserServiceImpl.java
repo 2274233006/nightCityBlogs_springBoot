@@ -16,6 +16,7 @@ import com.nightCityBlogs.service.user.UserService;
 import com.nightCityBlogs.utils.SendMaliService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
 import java.util.Objects;
 
@@ -52,7 +53,11 @@ public class UserServiceImpl implements UserService {
             return SaResult.error(RespStatus.NO_USER_EXIST.getMsg());
         }
         //反之判断用户提供的密码是否与mysql中的密码一致
-        if (loginParam.getPassword().equals(userEntity.getPassword())) {
+        String md5Password = DigestUtils.md5DigestAsHex(loginParam.getPassword().getBytes());
+
+        System.out.println("md5Password: "+md5Password);
+        System.out.println("userEntity Password: "+userEntity.getPassword() );
+        if (md5Password.equals(userEntity.getPassword())) {
             //根据用户id返回一个token
             StpUtil.login(userEntity.getId());
             //实例化返回前端的用户信息类
@@ -77,7 +82,8 @@ public class UserServiceImpl implements UserService {
         UserEntity userEntity = selectMapper.selectByName(registerParam.getUsername());
         if (userEntity == null) {
             if (registerParam.getAuthCode().equals(redisService.getValue(registerParam.getEmailAddress()))) {
-                userMapper.register(registerParam.getUsername(), registerParam.getPassword(), registerParam.getEmailAddress());
+                String md5Password = DigestUtils.md5DigestAsHex(registerParam.getPassword().getBytes());
+                userMapper.register(registerParam.getUsername(), md5Password, registerParam.getEmailAddress());
                 return SaResult.ok("注册成功！正在跳转登录");
             }
             return SaResult.error("验证码不正确");
@@ -136,8 +142,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public SaResult forget(String authCode, String newPassword, String email, String username) {
+        String md5Password = DigestUtils.md5DigestAsHex(newPassword.getBytes());
         if(authCode.equals(redisService.getValue(email))){
-            userMapper.updatePassword(newPassword,username);
+            userMapper.updatePassword(md5Password,username);
             return SaResult.ok("修改成功");
         }
         return SaResult.error("验证码错误");

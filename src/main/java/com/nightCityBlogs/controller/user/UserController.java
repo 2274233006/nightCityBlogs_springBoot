@@ -7,7 +7,7 @@ import com.nightCityBlogs.service.user.UserService;
 import com.nightCityBlogs.utils.SendMaliService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.util.DigestUtils;
 /**
  * 用户操作接口
  *
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/user")
-@CrossOrigin(origins = "http://127.0.0.1:5173", allowCredentials = "true")
+@CrossOrigin(origins = "http://www.nightcity.work:1080", allowCredentials = "true")
 public class UserController {
     @Autowired
     private UserService userService;
