@@ -70,4 +70,4 @@
 
 #### 开源协议
 
-本项目使用[MIT](https://gitee.com/NightCityDemo/nightCityBlogs/blob/master/LICENSE)协议
+本项目使用[MIT](https://gitee.com/NightCityDemo/nightcityblogs_spring-boot/blob/master/LICENSE)协议
