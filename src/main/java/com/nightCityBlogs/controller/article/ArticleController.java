@@ -8,9 +8,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * 文章相关接口
+ */
 @RestController
 @RequestMapping("/article")
-@CrossOrigin(origins = "http://www.nightcity.work:1080", allowCredentials = "true")
+@CrossOrigin(origins = "http://127.0.0.1:5173", allowCredentials = "true")
 public class ArticleController {
     @Autowired
     private ArticleService articleService;

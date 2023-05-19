@@ -8,9 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * @version 1.0
+ * 后台管理接口
+ */
 @RestController
 @RequestMapping("/admin")
-@CrossOrigin(origins = "http://www.nightcity.work:1080", allowCredentials = "true")
+@CrossOrigin(origins = "http://127.0.0.1:5173", allowCredentials = "true")
 public class adminController {
     @Autowired
     private AdminService adminService;

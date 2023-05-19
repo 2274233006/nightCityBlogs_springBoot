@@ -6,9 +6,12 @@ import com.nightCityBlogs.service.classification.ClassificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * 分类相关接口
+ */
 @RestController
 @RequestMapping("/classification")
-@CrossOrigin(origins = "http://www.nightcity.work:1080", allowCredentials = "true")
+@CrossOrigin(origins = "http://127.0.0.1:5173", allowCredentials = "true")
 public class ClassificationController {
     @Autowired
     private ClassificationService classificationService;

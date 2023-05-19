@@ -16,7 +16,7 @@ import org.springframework.util.DigestUtils;
  */
 @RestController
 @RequestMapping("/user")
-@CrossOrigin(origins = "http://www.nightcity.work:1080", allowCredentials = "true")
+@CrossOrigin(origins = "http://127.0.0.1:5173", allowCredentials = "true")
 public class UserController {
     @Autowired
     private UserService userService;

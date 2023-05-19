@@ -16,13 +16,11 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @RestController
 @RequestMapping("/update")
-@CrossOrigin(origins = "http://www.nightcity.work:1080", allowCredentials = "true")
+@CrossOrigin(origins = "http://127.0.0.1:5173", allowCredentials = "true")
 public class UpdateController {
 
     @Autowired
     private UpdateService updateService;
-    @Autowired
-    private UserMapper userMapper;
 
     /**
      * 修改基础信息

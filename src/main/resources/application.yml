@@ -1,19 +1,24 @@
 server:
   port: 1010
 spring:
-  servlet:
-    multipart:
-      max-file-size: 3MB
-      max-request-size: 60MB
+#  redis配置
   redis:
-    host: 101.34.45.254
-    port: 8888
-    password: nightCity
+#   redis服务ip 例：host: 192.168.1.1
+    host:
+#   端口
+    port:
+#   密码，没有可以空着，但是建议改端口+设密码，我第一次用的时候没有修改用的默认，不出两个小时服务器直接崩
+    password:
+# mysql设置
   datasource:
-    url: jdbc:mysql://101.34.45.254:6666/nightCityBlogs?useUnicode=true&characterEncoding=utf8
+    url:
+#   url: jdbc:mysql:/mysql服务器ip地址:端口号/数据库名?useUnicode=true&characterEncoding=utf8
+#   url: jdbc:mysql:/localhost:8080/user?useUnicode=true&characterEncoding=utf8
     driverClassName: com.mysql.cj.jdbc.Driver
-    username: root
-    password: nightCity
+#    用户名
+    username:
+#   密码
+    password:
 
   #邮箱基本配置
   mail:
@@ -25,8 +30,8 @@ spring:
     host: smtp.qq.com
     #发送者邮箱
     username: 2274233006@qq.com
-    #配置密码,注意不是真正的密码，而是刚刚申请到的授权码
-    password: ooigaubzpqoieajc
+    #配置密码,注意不是密码，而是申请到的smtp授权码
+    password: password
     #端口号465或587
     port: 587
     #默认的邮件编码为UTF-8
@@ -48,7 +53,7 @@ mybatis:
 #  configuration:
 #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 sa-token:
-  # token名称 (同时也是cookie名称)
+  # token名称 (同时也是cookie名称)，这个名称前端发的时候需要加在请求头里，前端代码axios封装文件中有注释
   token-name: satoken
   # token有效期，单位s 默认30天, -1代表永不过期
   timeout: 3600

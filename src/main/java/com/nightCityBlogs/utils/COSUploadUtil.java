@@ -20,12 +20,13 @@ import java.util.Date;
 
 public class COSUploadUtil {
     // 初始化用户身份信息
-    String secretId = "AKIDBNUSGyWrARULyMXVGArLcfU6UeZFjzIe";
-    String secretKey = "LVRAf0AG9sQltrgJl03xjMmz2rVyHNI2";
+    //腾讯云COS控制台-密钥管理，具体使用方式参考腾讯云COS文档
+    String secretId = "";
+    String secretKey = "";
     // 地域
-    String bucketRegion = "ap-shanghai";
+    String bucketRegion = "";
     // bucket名称
-    String bucketName = "nightcityblogs-1312951467";
+    String bucketName = "";
     //根据需要设置，参考官方文档
     String basicPath = "";
 
