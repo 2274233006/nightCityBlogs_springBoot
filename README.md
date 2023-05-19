@@ -25,7 +25,7 @@
 
 请先安装JDK1.8版本
 
-数据库文件在这儿:[nightCityBlogsSQL]()，记得先把表建好，名字字段什么的对应就行，我用的是mysql5.7的版本，如果使用高版本可能会有语法错误问题，自行解决🐕，redis和COS的配置在yml中有描述，也可以参考一些技术博客进行更改
+数据库文件在这儿:[nightCityBlogsSQL](https://gitee.com/NightCityDemo/nightcityblogs_spring-boot/blob/master/nightCityBlogsSQL.md)，记得先把表建好，名字字段什么的对应就行，我用的是mysql5.7的版本，如果使用高版本可能会有语法错误问题，自行解决🐕，redis和COS的配置在yml中有描述，也可以参考一些技术博客进行更改
 
 本项目使用maven进行管理
 
