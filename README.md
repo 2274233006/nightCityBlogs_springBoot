@@ -32,7 +32,7 @@
 1. 克隆项目到本地
 
    ```cmd
-   git clone https://gitee.com/NightCityDemo/nightcityblogs_spring-boot.git
+   git clone https://github.com/2274233006/nightCityBlogs_springBoot.git
    ```
 
 2. 安装项目依赖（maven自动安装）
